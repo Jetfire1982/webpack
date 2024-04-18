@@ -9,7 +9,8 @@ module.exports = (env) => {
       path: path.resolve(__dirname, 'build'),
       filename: '[name].[contenthash].js',
       clean: true
-    }
+    },
+    plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
   }
 }
 
