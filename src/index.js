@@ -1,4 +1,4 @@
 import {calc} from './test';
 
 
-console.log("answer = ", calc(5,6))
+console.log("answer = ", calc(5,7))
