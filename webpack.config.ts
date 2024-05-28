@@ -18,7 +18,7 @@ export default (env: EnvVariables) => {
   const isDev = env.mode === 'development';
   const config: webpack.Configuration = {
     mode: env.mode ?? 'development',
-    entry: path.resolve(__dirname, 'src', 'index.ts'), //путь до входного файла, до точки входа в наше приложение
+    entry: path.resolve(__dirname, 'src', 'index.tsx'), //путь до входного файла, до точки входа в наше приложение
     output: { //тут задаем куда происходить сборка
       path: path.resolve(__dirname, 'build'),
       filename: '[name].[contenthash].js', //для filename можно использовать шаблоны чтобы избежать проблем кеширования в браузере
@@ -31,6 +31,7 @@ export default (env: EnvVariables) => {
     module: {
       rules: [ //тут у нас лоудеры которые както обрабатывают файлы с разными расширениями
         {
+          //Важно!: ts-loader умеет работать с JSX. Если б мы не использовали тайпскрипт то пришлось бы подключать и настраивать babel-loader
           test: /\.tsx?$/,
           use: 'ts-loader',
           exclude: /node_modules/,
