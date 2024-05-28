@@ -30,6 +30,11 @@ export default (env: EnvVariables) => {
     ],
     module: {
       rules: [ //тут у нас лоудеры которые както обрабатывают файлы с разными расширениями
+      //порядок имеет значение
+         {
+          test: /\.s[ac]ss$/i,
+          use: ["style-loader", "css-loader", "sass-loader"]
+         },
         {
           //Важно!: ts-loader умеет работать с JSX. Если б мы не использовали тайпскрипт то пришлось бы подключать и настраивать babel-loader
           test: /\.tsx?$/,
