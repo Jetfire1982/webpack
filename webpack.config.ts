@@ -5,6 +5,7 @@
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from  'webpack';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import type {Configuration as DevServerCnfiguration} from 'webpack-dev-server'
 
 type Mode = 'production' | 'development';
@@ -26,14 +27,21 @@ export default (env: EnvVariables) => {
     },
     plugins: [
       new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'public', 'index.html') }), //подставляет скрипты которые получаются в результате сборки в нашу html-ку
-      new webpack.ProgressPlugin() //показывает в процентах насколько прошла сборка (помни что в больших проектах он может замедлять сборку и посему их тоже можно исключать используя наш маркер isDev)
+      isDev && new webpack.ProgressPlugin(), //показывает в процентах насколько прошла сборка (помни что в больших проектах он может замедлять сборку и посему их тоже можно исключать используя наш маркер isDev)
+      !isDev && new MiniCssExtractPlugin({
+        filename: 'css/[name].[contenthash:8].css',
+        chunkFilename: 'css/[name].[contenthash:8].css'
+      })
     ],
     module: {
       rules: [ //тут у нас лоудеры которые както обрабатывают файлы с разными расширениями
       //порядок имеет значение
          {
           test: /\.s[ac]ss$/i,
-          use: ["style-loader", "css-loader", "sass-loader"]
+          use: [
+            isDev ? 'style-loader': MiniCssExtractPlugin.loader, 
+            "css-loader", 
+            "sass-loader"]
          },
         {
           //Важно!: ts-loader умеет работать с JSX. Если б мы не использовали тайпскрипт то пришлось бы подключать и настраивать babel-loader
