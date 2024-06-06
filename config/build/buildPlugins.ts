@@ -1,0 +1,34 @@
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import path from "path";
+import webpack from "webpack";
+import { Configuration } from "webpack";
+import { BuildOptions } from "./types/types";
+
+
+export function buildPlugins({mode, paths}: BuildOptions): Configuration['plugins']{
+    const isDev = mode === 'development';
+    const isProd = mode === 'production';
+
+
+    const plugins: Configuration['plugins'] = [
+      new HtmlWebpackPlugin({ template: paths.html}), //подставляет скрипты которые получаются в результате сборки в нашу html-ку 
+    ]
+
+    if(isDev){
+      plugins.push(new webpack.ProgressPlugin()) //показывает в процентах насколько прошла сборка (помни что в больших проектах он может замедлять сборку и посему их тоже можно исключать используя наш маркер isDev))
+    }
+
+    if(isProd){
+      plugins.push(
+        new MiniCssExtractPlugin({
+          filename: 'css/[name].[contenthash:8].css',
+          chunkFilename: 'css/[name].[contenthash:8].css'
+        })
+      )
+    }
+
+
+
+    return plugins;
+}

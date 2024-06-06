@@ -7,60 +7,28 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from  'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import type {Configuration as DevServerCnfiguration} from 'webpack-dev-server'
+import { buildWebpack } from './config/build/buildWebpack';
+import { BuildMode, BuildPaths } from './config/build/types/types';
 
-type Mode = 'production' | 'development';
+
 
 interface EnvVariables {
-  mode: Mode,
+  mode: BuildMode,
   port: number
 }
 
 export default (env: EnvVariables) => {
-  const isDev = env.mode === 'development';
-  const config: webpack.Configuration = {
-    mode: env.mode ?? 'development',
-    entry: path.resolve(__dirname, 'src', 'index.tsx'), //путь до входного файла, до точки входа в наше приложение
-    output: { //тут задаем куда происходить сборка
-      path: path.resolve(__dirname, 'build'),
-      filename: '[name].[contenthash].js', //для filename можно использовать шаблоны чтобы избежать проблем кеширования в браузере
-      clean: true
-    },
-    plugins: [
-      new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'public', 'index.html') }), //подставляет скрипты которые получаются в результате сборки в нашу html-ку
-      isDev && new webpack.ProgressPlugin(), //показывает в процентах насколько прошла сборка (помни что в больших проектах он может замедлять сборку и посему их тоже можно исключать используя наш маркер isDev)
-      !isDev && new MiniCssExtractPlugin({
-        filename: 'css/[name].[contenthash:8].css',
-        chunkFilename: 'css/[name].[contenthash:8].css'
-      })
-    ],
-    module: {
-      rules: [ //тут у нас лоудеры которые както обрабатывают файлы с разными расширениями
-      //порядок имеет значение
-         {
-          test: /\.s[ac]ss$/i,
-          use: [
-            isDev ? 'style-loader': MiniCssExtractPlugin.loader, 
-            "css-loader", 
-            "sass-loader"]
-         },
-        {
-          //Важно!: ts-loader умеет работать с JSX. Если б мы не использовали тайпскрипт то пришлось бы подключать и настраивать babel-loader
-          test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
-        },
-      ],
-    },
-    resolve: {
-      extensions: ['.tsx', '.ts', '.js'], //тут расширения файлов с исходным кодом
-    },
-    devtool: isDev && 'inline-source-map', //делаем source map 
-    devServer: isDev ? {  //настраиваем devServer
-      port: env.port ?? 3000,
-      open: true
-    }:undefined
-
+  const paths: BuildPaths = {
+    output: path.resolve(__dirname, 'build'),
+    entry: path.resolve(__dirname, 'src', 'index.tsx'),
+    html: path.resolve(__dirname, 'public', 'index.html')
   }
+  
+  const config: webpack.Configuration = buildWebpack({
+    port: env.port ?? 3000,
+    mode: env.mode ?? 'development',
+    paths
+  })
 
   return config;
 }
