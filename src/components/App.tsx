@@ -8,8 +8,12 @@ import Instagram from '@/assets/instagram.svg'
 import Burger from '@/assets/burger.svg'
 
 
+
+
 export const  App = () => {
     const [count, setCount] = useState(0)
+
+  
 
     const increment = () => setCount(prev => prev+1)
 

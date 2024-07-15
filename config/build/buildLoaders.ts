@@ -65,11 +65,26 @@ export  function buildLoaders(options: BuildOptions): ModuleOptions['rules']{
    }
 
 
-   const tsLoader =  {
+  //  const tsLoader =  {
+  //   //Важно!: ts-loader умеет работать с JSX. Если б мы не использовали тайпскрипт то пришлось бы подключать и настраивать babel-loader
+  //   test: /\.tsx?$/,
+  //   use: 'ts-loader',
+  //   exclude: /node_modules/,
+  // }
+
+  //в этом варианте tsLoader мы при сборке не делаем проверку на типы для скорости благодаря флагу transpileOnly
+  const tsLoader =  {
     //Важно!: ts-loader умеет работать с JSX. Если б мы не использовали тайпскрипт то пришлось бы подключать и настраивать babel-loader
-    test: /\.tsx?$/,
-    use: 'ts-loader',
     exclude: /node_modules/,
+    test: /\.tsx?$/,
+    use:[
+      {
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true      // если стоит true то на типы не проверяем и ускоряем сборку проекта
+        }
+      }
+    ]
   }
 
 
