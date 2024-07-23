@@ -17,17 +17,17 @@ export const  App = () => {
 
     const increment = () => setCount(prev => prev+1)
 
-    if(__PLATFORM__ === 'desktop'){
-        return <div>ISDESKTOPPLATFORM</div>
-    }
+    // if(__PLATFORM__ === 'desktop'){
+    //     return <div>ISDESKTOPPLATFORM</div>
+    // }
 
-    if(__PLATFORM__ === 'mobile'){
-        return <div>ISMOBILEPLATFORM</div>
-    }
+    // if(__PLATFORM__ === 'mobile'){
+    //     return <div>ISMOBILEPLATFORM</div>
+    // }
 
-    if(__ENV__ === 'development'){
-        //addDevtools()
-    }
+    // if(__ENV__ === 'development'){
+    //     //addDevtools()
+    // }
 
 
     return (
@@ -37,13 +37,15 @@ export const  App = () => {
                 <img src={twitter} width="100" height="100" alt="" />
                 <img src={delicious} width={50} height={50} alt="" />
             </div>
+            <div>dddddd</div>
             <div>
                 <Instagram  />
             </div>
             <div>
-                <Burger fill={'red'} width={150} height={150} />
+                <Burger fill={'green'} width={150} height={150} />
                 <Burger className={classes.icon} width={150} height={150} />
-                <Burger color={'red'} width={150} height={150} />
+                <Burger color={'green'} width={150} height={150} />
+                <Burger color={'green'} width={150} height={150} />
                
 
             </div>

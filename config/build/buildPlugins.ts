@@ -5,7 +5,8 @@ import webpack, { DefinePlugin } from "webpack";
 import { Configuration } from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import { BuildOptions } from "./types/types";
-import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin"
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin"
 
 export function buildPlugins({mode, paths, analyzer, platform}: BuildOptions): Configuration['plugins']{
     const isDev = mode === 'development';
@@ -24,6 +25,7 @@ export function buildPlugins({mode, paths, analyzer, platform}: BuildOptions): C
       plugins.push(new webpack.ProgressPlugin()) //показывает в процентах насколько прошла сборка (помни что в больших проектах он может замедлять сборку и посему их тоже можно исключать используя наш маркер isDev))
        /*Выносит проверку типов в отдельный процесс: не нагружая сборку:*/
        plugins.push(new ForkTsCheckerWebpackPlugin())
+       plugins.push(new ReactRefreshWebpackPlugin())
     }
 
     if(isProd){
