@@ -7,7 +7,7 @@ import delicious from '@/assets/delicious.jpg'
 import Instagram from '@/assets/instagram.svg'
 import Burger from '@/assets/burger.svg'
 
-
+import React from 'react';
 
 
 export const  App = () => {
@@ -31,8 +31,8 @@ export const  App = () => {
 
 
     return (
-        <div>
-            <h1>PLATFORM={__PLATFORM__}</h1>
+        <div data-testid={'App'}>
+            <h1 data-testid={'Platform'}>PLATFORM={__PLATFORM__}</h1>
             <div>
                 <img src={twitter} width="100" height="100" alt="" />
                 <img src={delicious} width={50} height={50} alt="" />
